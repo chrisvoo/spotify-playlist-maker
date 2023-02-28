@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+    {{> ./head.html }}
+    <body>
+        <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+            {{> ./header.html}}
+
+            <main role="main" class="inner cover text-center center-screen">
+              <h1 class="cover-heading">Spotify Playlist Maker</h1>
+              <p class="lead">Sync local music collection with your spotify account</p>
+              <p class="lead">
+                <a href="/login" class="btn btn-lg btn-secondary">Login</a>
+              </p>
+            </main>
+
+            {{> ./footer.html }}
+        </div>
+        {{> ./scripts.html }}
+    </body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+    {{> ../head.html }}
+    <body>
+        <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+            <header class="masthead mb-auto">
+              <div class="inner">
+                <nav class="nav nav-masthead justify-content-center">
+                  <a class="nav-link active" href="#">Home</a>
+                  <a class="nav-link" href="#">Features</a>
+                  <a class="nav-link" href="#">Contact</a>
+                </nav>
+              </div>
+            </header>
+
+            <main role="main" class="inner cover text-center">
+              <h3 class="cover-heading">Error</h3>
+              <p class="lead">Server reply: <code>{{ error }}</code></p>
+              <p class="lead">
+                <a href="/" class="btn btn-lg btn-secondary">Back</a>
+              </p>
+            </main>
+
+            {{> ../footer.html }}
+        </div>
+        {{> ../scripts.html }}
+    </body>
+</html>
