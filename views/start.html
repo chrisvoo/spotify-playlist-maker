@@ -1,56 +1,158 @@
 <!doctype html>
 <html lang="en">
-    {{> ./head.html }}
+    <head>
+      {{> ./head.html }}
+      <link rel="stylesheet" href="/css/start.css?v=1.0">
+    </head>
     <body>
-        <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-            {{> ./header.html}}
-
-            <main role="main" class="cover text-center">
-                <div class="card mb-3">
-                    <div class="row g-0">
-                      <div class="col-md-4">
-                        <img src="{{ image_url }}" class="img-fluid rounded-start" alt="Profile image">
-                      </div>
-                      <div class="col-md-8 dark">
-                        <div class="card-body">
-                          <h5 class="card-title">{{ name }}</h5>
-                          <ul class="list-group list-group-flush">
-                            <li class="list-group-item dark">Email: {{ email }}</li>
-                            <li class="list-group-item dark">Country: {{ country }}</li>
-                            <li class="list-group-item dark">{{ product }} {{ type }} (ID: {{ userid }})</li>
-                          </ul>
-                          <p class="card-text">
-                            <small class="text-muted">
-                                <a href="{{ user_profile_url }}" target="_blank">Spotify web profile</a>
-                            </small>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-                <div class="row bg mb-3 mt-5">
-                    <h3>Current playlists</h3>
-                </div>
-                <div class="row dark">
-                    <table id="playlists" class="cell-border compact stripe" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Tracks</th>
-                                <th>Public</th>
-                                <th>URL</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-            </main>
-
-            {{> ./footer.html }}
+      <div class="container main py-4">
+        <div class="row">
+          <div class="col">
+            <div class="d-flex">
+              <div class="flex-shrink-0">
+                <img src="{{ image_url }}" width="245px" class="rounded" alt="Profile image">
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <ul class="list-group list-group-flush rounded">
+                  <li class="list-group-item">ID: {{ userid }}</li>
+                  <li class="list-group-item">Name: {{ name }}</li>
+                  <li class="list-group-item">Email: {{ email }}</li>
+                  <li class="list-group-item">Country: {{ country }}</li>
+                  <li class="list-group-item">{{ product }} {{ type }}</li>
+                  <li class="list-group-item">{{ user_profile_url }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
-        {{> ./scripts.html }}
-        <script src="/js/playlists.js"></script>
+        <div class="row mt-4 text-center">
+          <div class="col row-title"><h3>Playlists</h3></div>
+        </div>
+        <div class="row mt-1">
+          <div class="col">
+            <div class="card table-responsive table-scroll">
+              <table class="table">
+                <thead class="table-light">
+                  <th class="d-none">ID</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Tracks</th>
+                  <th>Public</th>
+                  <th>URL</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="d-none">1</td>
+                    <td>Ciccio</td>
+                    <td>ewfef ef f</td>
+                    <td>18</td>
+                    <td>Yes</td>
+                    <td><a href="#">Open</a></td>
+                  </tr>
+                  <tr>
+                    <td class="d-none">1</td>
+                    <td>Ciccio</td>
+                    <td>ewfef ef f</td>
+                    <td>18</td>
+                    <td>Yes</td>
+                    <td><a href="#">Open</a></td>
+                  </tr>
+                  <tr>
+                    <td class="d-none">1</td>
+                    <td>Ciccio</td>
+                    <td>ewfef ef f</td>
+                    <td>18</td>
+                    <td>Yes</td>
+                    <td><a href="#">Open</a></td>
+                  </tr>
+                  <tr>
+                    <td class="d-none">1</td>
+                    <td>Ciccio</td>
+                    <td>ewfef ef f</td>
+                    <td>18</td>
+                    <td>Yes</td>
+                    <td><a href="#">Open</a></td>
+                  </tr>
+                  <tr>
+                    <td class="d-none">1</td>
+                    <td>Ciccio</td>
+                    <td>ewfef ef f</td>
+                    <td>18</td>
+                    <td>Yes</td>
+                    <td><a href="#">Open</a></td>
+                  </tr>
+                  <tr>
+                    <td class="d-none">1</td>
+                    <td>Ciccio</td>
+                    <td>ewfef ef f</td>
+                    <td>18</td>
+                    <td>Yes</td>
+                    <td><a href="#">Open</a></td>
+                  </tr>
+                  <tr>
+                    <td class="d-none">1</td>
+                    <td>Ciccio</td>
+                    <td>ewfef ef f</td>
+                    <td>18</td>
+                    <td>Yes</td>
+                    <td><a href="#">Open</a></td>
+                  </tr>
+                  <tr>
+                    <td class="d-none">1</td>
+                    <td>Ciccio</td>
+                    <td>ewfef ef f</td>
+                    <td>18</td>
+                    <td>Yes</td>
+                    <td><a href="#">Open</a></td>
+                  </tr>
+                  <tr>
+                    <td class="d-none">1</td>
+                    <td>Ciccio</td>
+                    <td>ewfef ef f</td>
+                    <td>18</td>
+                    <td>Yes</td>
+                    <td><a href="#">Open</a></td>
+                  </tr>
+                  <tr>
+                    <td class="d-none">1</td>
+                    <td>Ciccio</td>
+                    <td>ewfef ef f</td>
+                    <td>18</td>
+                    <td>Yes</td>
+                    <td><a href="#">Open</a></td>
+                  </tr>
+                  <tr>
+                    <td class="d-none">1</td>
+                    <td>Ciccio</td>
+                    <td>ewfef ef f</td>
+                    <td>18</td>
+                    <td>Yes</td>
+                    <td><a href="#">Open</a></td>
+                  </tr>
+                  <tr>
+                    <td class="d-none">1</td>
+                    <td>Ciccio</td>
+                    <td>ewfef ef f</td>
+                    <td>18</td>
+                    <td>Yes</td>
+                    <td><a href="#">Open</a></td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th class="text-muted small">Showing X of Y items</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Ciao</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{> ./scripts.html }}
+      <script src="/js/playlists.js"></script>
     </body>
 </html>
