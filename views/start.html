@@ -7,7 +7,7 @@
     <body>
       <div class="container main py-4">
         <div class="row">
-          <div class="col">
+          <div class="col-md-6">
             <div class="d-flex">
               <div class="flex-shrink-0">
                 <img src="{{ image_url }}" width="245px" class="rounded" alt="Profile image">
@@ -15,12 +15,31 @@
               <div class="flex-grow-1 ms-3">
                 <ul class="list-group list-group-flush rounded">
                   <li class="list-group-item">ID: {{ userid }}</li>
-                  <li class="list-group-item">Name: {{ name }}</li>
+                  <li class="list-group-item">Name: {{ name }}</li>
                   <li class="list-group-item">Email: {{ email }}</li>
                   <li class="list-group-item">Country: {{ country }}</li>
                   <li class="list-group-item">{{ product }} {{ type }}</li>
                   <li class="list-group-item">{{ user_profile_url }}</li>
                 </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card" id="activity-card">
+              <div class="card-header text-center">
+                Scanning activity
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Status: stopped</h5>
+                <p class="card-text">
+                  Last item found: stocazzo
+                </p>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                </div>
+              </div>
+              <div class="card-footer text-muted text-center">
+                Last update: 2023-10-10 11:12:13
               </div>
             </div>
           </div>
@@ -138,16 +157,33 @@
                     <td><a href="#">Open</a></td>
                   </tr>
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <th class="text-muted small">Showing X of Y items</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>Ciao</td>
-                  </tr>
-                </tfoot>
               </table>
+            </div>
+          </div>
+        </div>
+        <div class="row table-footer">
+          <div class="col-sm-6 d-flex align-items-center">
+            <div class="text-muted small">Showing X of Y items</div>
+          </div>
+          <div class="col-sm-6">
+            <div class="nav-wrapper">
+              <nav aria-label="Page navigation example">
+                <ul class="pagination pagination-sm justify-content-end">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>

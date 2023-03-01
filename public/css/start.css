@@ -69,3 +69,18 @@ thead th:first-child,
 tfoot th:first-child {
     z-index: 5;
 }
+
+#activity-card {
+    height: 245px
+}
+
+.table-footer {
+    background-color: white;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.nav-wrapper {
+    position: relative;
+    top: 10px;
+}
