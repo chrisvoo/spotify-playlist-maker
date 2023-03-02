@@ -107,7 +107,18 @@ export default class SpotifyClient {
         return this.#apiCall('/me')
     }
 
-    async getPlaylists() {
-        return this.#apiCall(`/users/${this.userId}/playlists`)
+    async getPlaylists(params = {}) {
+        let limit = 20
+        let offset = 0
+
+        if (Number.isInteger(params.limit) && params.limit >= 0 && params.limit <= 50) {
+            limit = params.limit
+        }
+
+        if (Number.isInteger(params.offset) && params.offset >= 0 && params.offset <= 100000) {
+            offset = params.offset
+        }
+
+        return this.#apiCall(`/users/${this.userId}/playlists?limit=${limit}&offset=${offset}`)
     }
 }
