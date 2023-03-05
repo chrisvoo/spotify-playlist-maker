@@ -17,15 +17,16 @@ export default function playlists(app) {
                 description: item.description,
                 RowId: item.id,
                 name: item.name,
-                public: item.public,
+                isPublic: item.public,
                 tracks: item.tracks.total,
                 url: item.external_urls.spotify
             }))
 
             res.json({
                 recordsTotal: total,
-                recordsFiltered: total,
-                data
+                data,
+                limit,
+                offset
             })
         } catch (e) {
             return next(e)

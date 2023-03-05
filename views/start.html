@@ -19,7 +19,9 @@
                   <li class="list-group-item">Email: {{ email }}</li>
                   <li class="list-group-item">Country: {{ country }}</li>
                   <li class="list-group-item">{{ product }} {{ type }}</li>
-                  <li class="list-group-item">{{ user_profile_url }}</li>
+                  <li class="list-group-item">
+                    <a href="{{ user_profile_url }}" target="_blank">User profile</a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -60,102 +62,6 @@
                   <th>URL</th>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td class="d-none">1</td>
-                    <td>Ciccio</td>
-                    <td>ewfef ef f</td>
-                    <td>18</td>
-                    <td>Yes</td>
-                    <td><a href="#">Open</a></td>
-                  </tr>
-                  <tr>
-                    <td class="d-none">1</td>
-                    <td>Ciccio</td>
-                    <td>ewfef ef f</td>
-                    <td>18</td>
-                    <td>Yes</td>
-                    <td><a href="#">Open</a></td>
-                  </tr>
-                  <tr>
-                    <td class="d-none">1</td>
-                    <td>Ciccio</td>
-                    <td>ewfef ef f</td>
-                    <td>18</td>
-                    <td>Yes</td>
-                    <td><a href="#">Open</a></td>
-                  </tr>
-                  <tr>
-                    <td class="d-none">1</td>
-                    <td>Ciccio</td>
-                    <td>ewfef ef f</td>
-                    <td>18</td>
-                    <td>Yes</td>
-                    <td><a href="#">Open</a></td>
-                  </tr>
-                  <tr>
-                    <td class="d-none">1</td>
-                    <td>Ciccio</td>
-                    <td>ewfef ef f</td>
-                    <td>18</td>
-                    <td>Yes</td>
-                    <td><a href="#">Open</a></td>
-                  </tr>
-                  <tr>
-                    <td class="d-none">1</td>
-                    <td>Ciccio</td>
-                    <td>ewfef ef f</td>
-                    <td>18</td>
-                    <td>Yes</td>
-                    <td><a href="#">Open</a></td>
-                  </tr>
-                  <tr>
-                    <td class="d-none">1</td>
-                    <td>Ciccio</td>
-                    <td>ewfef ef f</td>
-                    <td>18</td>
-                    <td>Yes</td>
-                    <td><a href="#">Open</a></td>
-                  </tr>
-                  <tr>
-                    <td class="d-none">1</td>
-                    <td>Ciccio</td>
-                    <td>ewfef ef f</td>
-                    <td>18</td>
-                    <td>Yes</td>
-                    <td><a href="#">Open</a></td>
-                  </tr>
-                  <tr>
-                    <td class="d-none">1</td>
-                    <td>Ciccio</td>
-                    <td>ewfef ef f</td>
-                    <td>18</td>
-                    <td>Yes</td>
-                    <td><a href="#">Open</a></td>
-                  </tr>
-                  <tr>
-                    <td class="d-none">1</td>
-                    <td>Ciccio</td>
-                    <td>ewfef ef f</td>
-                    <td>18</td>
-                    <td>Yes</td>
-                    <td><a href="#">Open</a></td>
-                  </tr>
-                  <tr>
-                    <td class="d-none">1</td>
-                    <td>Ciccio</td>
-                    <td>ewfef ef f</td>
-                    <td>18</td>
-                    <td>Yes</td>
-                    <td><a href="#">Open</a></td>
-                  </tr>
-                  <tr>
-                    <td class="d-none">1</td>
-                    <td>Ciccio</td>
-                    <td>ewfef ef f</td>
-                    <td>18</td>
-                    <td>Yes</td>
-                    <td><a href="#">Open</a></td>
-                  </tr>
                 </tbody>
               </table>
             </div>
@@ -163,12 +69,26 @@
         </div>
         <div class="row table-footer">
           <div class="col-sm-6 d-flex align-items-center">
-            <div class="text-muted small">Showing X of Y items</div>
+            <div class="text-muted small" id="caption-show-items"></div>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-4 me-0 pe-0">
+            <div class="pages">
+              <div class="btn-group">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Page size
+                </button>
+                <ul class="dropdown-menu" id="pages-dropdown">
+                  <li><a class="dropdown-item active">10</a>
+                  <li><a class="dropdown-item" href="">25</a>
+                  <li><a class="dropdown-item" href="">50</a>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2 ms-0 ps-0">
             <div class="nav-wrapper">
               <nav aria-label="Page navigation example">
-                <ul class="pagination pagination-sm justify-content-end">
+                <ul class="pagination pagination-sm justify-content-end" id="pagination">
                   <li class="page-item disabled">
                     <a class="page-link" href="#" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>

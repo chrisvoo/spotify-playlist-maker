@@ -24,7 +24,6 @@ body {
 
 .table-scroll table {
     width: 100%;
-    margin: auto;
     border-collapse: separate;
     border-spacing: 0;
 }
@@ -80,7 +79,12 @@ tfoot th:first-child {
     margin-right: 0;
 }
 
-.nav-wrapper {
+.nav-wrapper, .pages {
     position: relative;
     top: 10px;
+}
+
+.pages {
+    display: flex;
+    justify-content: end;
 }

@@ -24,6 +24,7 @@ export default class SpotifyClient {
     /**
      * Get a token
      * @param {URLSearchParams} formData
+     * @returns {Object|null} The object with access token or null if an error occurred
      */
     async #getToken(formData) {
         try {
@@ -37,12 +38,13 @@ export default class SpotifyClient {
                 body: formData.toString()
             })
 
-            console.log('getToken: ' + statusCode)
+            console.log(`getToken ${formData.get('grant_type')} ${statusCode}`)
 
 
             return body.json()
         } catch (e) {
-            console.error(`Error retrieving the token: ${e.stack}`)
+            console.error(`Error retrieving the ${formData.get('grant_type')}: ${e.stack}`)
+            return null
         }
     }
 
@@ -69,8 +71,11 @@ export default class SpotifyClient {
 
     #refreshToken(expiresIn, refreshToken) {
         setInterval(async () => {
-            const { access_token} = await this.#getRefreshToken(refreshToken)
-            this.#token = access_token
+            const res = await this.#getRefreshToken(refreshToken)
+            if (res !== null) {
+                const { access_token} = res
+                this.#token = access_token
+            }
         }, (expiresIn * 1000))
     }
 
