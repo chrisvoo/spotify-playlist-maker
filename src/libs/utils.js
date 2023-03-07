@@ -1,7 +1,7 @@
 import crypto from 'crypto'
-import { existsSync, lstatSync } from 'node:fs'
+import { checkExecutable } from './mediainfo/mediainfo.js';
 
-export function checkEnv() {
+export async function checkEnv() {
     if (
         !process.env.CLIENT_ID ||
         !process.env.CLIENT_SECRET ||
@@ -11,11 +11,12 @@ export function checkEnv() {
         throw new Error('Missing required env variables! See .env.dist')
     }
 
-    if (
-        !existsSync(process.env.MUSIC_DIRECTORY) ||
-        !lstatSync(process.env.MUSIC_DIRECTORY).isDirectory()
-    ) {
-        throw new Error('MUSIC_DIRECTORY must be a directory')
+    try {
+        console.log(await checkExecutable())
+    } catch (e) {
+        if (e.message.indexOf('not found') !== 0) {
+            throw new Error('Please install mediainfo utility: https://mediaarea.net/en/MediaInfo/Download')
+        }
     }
 }
 

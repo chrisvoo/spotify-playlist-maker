@@ -1,0 +1,62 @@
+{
+    "creatingLibrary":{
+       "name":"MediaInfoLib",
+       "version":"22.12",
+       "url":"https://mediaarea.net/MediaInfo"
+    },
+    "media":{
+       "@ref":"01 - Deliver Us From Evil.mp3",
+       "track":[
+          {
+             "@type":"General",
+             "AudioCount":"1",
+             "FileExtension":"mp3",
+             "Format":"MPEG Audio",
+             "FileSize":"12954439",
+             "Duration":"321.645",
+             "OverallBitRate_Mode":"CBR",
+             "OverallBitRate":"320000",
+             "StreamSize":"87567",
+             "Title":"Deliver Us From Evil",
+             "Album":"The God Machine",
+             "Album_Performer":"Blind Guardian",
+             "Part_Position":"1",
+             "Track":"Deliver Us From Evil",
+             "Track_Position":"1",
+             "Performer":"Blind Guardian",
+             "Publisher":"Nuclear Blast",
+             "Genre":"Rock",
+             "Recorded_Date":"2022-09-02",
+             "File_Modified_Date":"UTC 2022-10-30 06:17:27",
+             "File_Modified_Date_Local":"2022-10-30 07:17:27",
+             "Encoded_Library":"LAME3.99r",
+             "BPM":"0",
+             "Cover":"Yes",
+             "Cover_Description":"cover",
+             "Cover_Type":"Cover (front)",
+             "Cover_Mime":"image/jpeg"
+          },
+          {
+             "@type":"Audio",
+             "Format":"MPEG Audio",
+             "Format_Version":"1",
+             "Format_Profile":"Layer 3",
+             "Format_Settings_Mode":"Joint stereo",
+             "Duration":"321.646",
+             "BitRate_Mode":"CBR",
+             "BitRate":"320000",
+             "Channels":"2",
+             "SamplesPerFrame":"1152",
+             "SamplingRate":"44100",
+             "SamplingCount":"14184576",
+             "FrameRate":"38.281",
+             "FrameCount":"12313",
+             "Compression_Mode":"Lossy",
+             "StreamSize":"12865828",
+             "StreamSize_Proportion":"0.99316",
+             "Encoded_Library":"LAME3.99r",
+             "Encoded_Library_Settings":"-m j -V 4 -q 3 -lowpass 20.5"
+          }
+       ]
+    }
+ }

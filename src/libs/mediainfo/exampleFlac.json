@@ -1,0 +1,63 @@
+{
+    "creatingLibrary":{
+       "name":"MediaInfoLib",
+       "version":"22.12",
+       "url":"https://mediaarea.net/MediaInfo"
+    },
+    "media":{
+       "@ref":"01 Hot to the Touch.flac",
+       "track":[
+          {
+             "@type":"General",
+             "AudioCount":"1",
+             "FileExtension":"flac",
+             "Format":"FLAC",
+             "FileSize":"26066541",
+             "Duration":"211.400",
+             "OverallBitRate_Mode":"VBR",
+             "OverallBitRate":"986435",
+             "StreamSize":"0",
+             "Title":"Hot to the Touch",
+             "Album":"Midnight",
+             "Album_Performer":"Grace Potter",
+             "Part":"1",
+             "Part_Position_Total":"1",
+             "Track":"Hot to the Touch",
+             "Track_Position":"1",
+             "Track_Position_Total":"12",
+             "Performer":"Grace Potter",
+             "Genre":"Pop Rock",
+             "Recorded_Date":"2015",
+             "File_Modified_Date":"UTC 2023-01-28 09:39:15",
+             "File_Modified_Date_Local":"2023-01-28 10:39:15",
+             "Cover":"Yes",
+             "Cover_Type":"Cover (front)",
+             "Cover_Mime":"image/jpeg",
+             "Comment":"EAC V1.1, Secure Mode, Test & Copy, AccurateRip, FLAC -8"
+          },
+          {
+             "@type":"Audio",
+             "Format":"FLAC",
+             "Duration":"211.400",
+             "BitRate_Mode":"VBR",
+             "BitRate":"983578",
+             "Channels":"2",
+             "ChannelPositions":"Front: L R",
+             "ChannelLayout":"L R",
+             "SamplingRate":"44100",
+             "SamplingCount":"9322740",
+             "BitDepth":"16",
+             "Compression_Mode":"Lossless",
+             "StreamSize":"25991060",
+             "StreamSize_Proportion":"0.99710",
+             "Encoded_Library":"reference libFLAC 1.3.1 20141125",
+             "Encoded_Library_Name":"libFLAC",
+             "Encoded_Library_Version":"1.3.1",
+             "Encoded_Library_Date":"UTC 2014-11-25",
+             "extra":{
+                "MD5_Unencoded":"A77097F5B0965AC10A91D9219CF96FBF"
+             }
+          }
+       ]
+    }
+ }

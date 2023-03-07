@@ -1,4 +1,4 @@
-import SpotifyClient from "../spotifyClient.js";
+import SpotifyClient from "../libs/spotifyClient.js";
 
 /**
  * OAuth callback route

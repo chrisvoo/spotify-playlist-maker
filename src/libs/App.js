@@ -3,13 +3,14 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import sprightlyExpress from "sprightly/express"
 import { randString } from './utils.js'
-import index from './routes/index.js'
-import login from './routes/login.js'
-import oauth_callback from './routes/oauth_callback.js'
-import notFound from './routes/notFound.js'
-import internalError from './routes/error.js'
-import start from './routes/start.js'
-import playlists from './routes/playlists.js'
+import index from '../routes/index.js'
+import login from '../routes/login.js'
+import oauth_callback from '../routes/oauth_callback.js'
+import notFound from '../routes/notFound.js'
+import internalError from '../routes/error.js'
+import start from '../routes/start.js'
+import playlists from '../routes/playlists.js'
+import scan from '../routes/scan.js'
 
 export default class App {
     /** {Express} app */
@@ -50,6 +51,7 @@ export default class App {
         oauth_callback(this)
         start(this)
         playlists(this)
+        scan(this)
 
         // errors last
         notFound(this)
