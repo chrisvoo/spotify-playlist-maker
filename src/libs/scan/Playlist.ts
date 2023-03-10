@@ -1,30 +1,26 @@
 import path from "node:path"
 import Track from "./Track.js"
-import mediainfo from "../mediainfo/mediainfo.js"
+import mediainfo, { MediaResponse } from "../mediainfo/mediainfo.js"
 
 export default class Playlist {
-    /** @var {string} */
-    spotify_id
-    /** @var {string} */
-    name
-    /** @var {Track[]} */
-    tracks = []
-    /** @var {string} local path */
-    path
+    spotify_id?: string
+    name?: string
+    tracks: Track[] = []
+    path: string
 
-    constructor(dir) {
+    constructor(dir: string) {
         this.path = dir
         this.name = path.basename(dir)
     }
 
-    async addTracks(files) {
+    async addTracks(files: string[]): Promise<void> {
         for (const file of files) {
             // let's do one by one instead of waiting for all promises
             await this.addTrack(file)
         }
     }
 
-    async addTrack(file) {
+    async addTrack(file: string): Promise<void> {
         let track = new Track()
         try {
             const info = await mediainfo(file)
@@ -38,7 +34,7 @@ export default class Playlist {
                 const { name } = path.parse(file)
                 track.track_name = name
             }
-        } catch (e) {
+        } catch (e: any) {
             console.error('Cannot parse file: ' + e.message)
             const { name } = path.parse(file)
             track.track_name = name

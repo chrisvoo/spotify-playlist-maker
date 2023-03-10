@@ -1,4 +1,5 @@
-import express from 'express'
+import express, { Application } from 'express'
+import { Server } from 'node:http'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import sprightlyExpress from "sprightly/express"
@@ -11,19 +12,31 @@ import internalError from '../routes/error.js'
 import start from '../routes/start.js'
 import playlists from '../routes/playlists.js'
 import scan from '../routes/scan.js'
+import temp from '../routes/temp.js'
+import SpotifyClient from './spotifyClient.js'
+
+export type AppOptions = {
+    port?: number,
+    spotifyCookieName?: string
+}
+
+export type StateCookie = {
+    name: string,
+    value: string
+}
 
 export default class App {
     /** {Express} app */
-    express
+    express?: Application
     /** {int} express port */
-    #port
+    private port?: number
     /** {string} The state cookie */
-    stateCookie
-    spotifyClient
+    stateCookie?: StateCookie
+    spotifyClient?: SpotifyClient
 
-    constructor(options = {}) {
+    constructor(options: AppOptions = {}) {
         this.express = express()
-        this.#port = options.port || 3000
+        this.port = options.port || 3000
         this.stateCookie = {
             name: options.spotifyCookieName || 'spotify_auth_state',
             value: randString()
@@ -37,6 +50,7 @@ export default class App {
             .set('views', './views')
             .engine(
                 "html",
+                // @ts-ignore
                 sprightlyExpress({
                     cache: false,
                     keyFallback: "obada",
@@ -45,13 +59,14 @@ export default class App {
             )
     }
 
-    setupRoutes() {
+    setupRoutes(): this {
         index(this)
         login(this)
         oauth_callback(this)
         start(this)
         playlists(this)
         scan(this)
+        temp(this) //  @todo delete it
 
         // errors last
         notFound(this)
@@ -62,12 +77,12 @@ export default class App {
 
     /**
      * Starts the app
-     * @returns {Promise<http.Server>} The server instance
+     * @returns {Promise<Server>} The server instance
      */
-    async start() {
+    async start(): Promise<Server> {
         return new Promise((resolve) => {
-            const server = this.express.listen(this.#port, () => {
-                console.log(`Server listening on http://localhost:${this.#port}`)
+            const server = this.express!.listen(this.port, () => {
+                console.log(`Server listening on http://localhost:${this.port}`)
                 resolve(server)
             })
         })

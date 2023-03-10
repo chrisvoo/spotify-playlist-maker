@@ -1,9 +1,12 @@
+import { Request, Response, NextFunction } from 'express';
+import App from "../libs/App.js"
+
 /**
  * not found route
  * @param {App} app
  */
-export default function playlists(app) {
-    app.express.get('/playlists', async (req, res, next) => {
+export default function playlists(app: App) {
+    app.express!.get('/playlists', async (req: Request, res: Response, next: NextFunction) => {
         try {
             if (!app.spotifyClient || !app.spotifyClient.hasLoggedIn()) {
                 return res.redirect('/')

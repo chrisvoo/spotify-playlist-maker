@@ -1,14 +1,16 @@
 import { existsSync, lstatSync } from 'node:fs'
+import { Request, Response, NextFunction } from 'express';
+import App from '../libs/App.js';
 
 /**
  * Scan local files for creating the playlist
  * @param {App} app
  */
-export default function scan(app) {
-    app.express.get('/scan', async (req, res, next) => {
+export default function scan(app: App) {
+    app.express!.get('/scan', async (req: Request, res: Response, next: NextFunction) => {
         if (
-            !existsSync(process.env.MUSIC_DIRECTORY) ||
-            !lstatSync(process.env.MUSIC_DIRECTORY).isDirectory()
+            !existsSync(process.env.MUSIC_DIRECTORY!) ||
+            !lstatSync(process.env.MUSIC_DIRECTORY!).isDirectory()
         ) {
             throw new Error('MUSIC_DIRECTORY must be a directory')
         }

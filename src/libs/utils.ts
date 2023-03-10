@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import { checkExecutable } from './mediainfo/mediainfo.js';
 
-export async function checkEnv() {
+export async function checkEnv(): Promise<void> {
     if (
         !process.env.CLIENT_ID ||
         !process.env.CLIENT_SECRET ||
@@ -13,13 +13,13 @@ export async function checkEnv() {
 
     try {
         console.log(await checkExecutable())
-    } catch (e) {
+    } catch (e: any) {
         if (e.message.indexOf('not found') !== 0) {
             throw new Error('Please install mediainfo utility: https://mediaarea.net/en/MediaInfo/Download')
         }
     }
 }
 
-export function randString(size = 32) {
+export function randString(size = 32): string {
     return crypto.randomBytes(size).toString('hex')
 }

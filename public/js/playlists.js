@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 let offset = 0, limit = 10
 
 async function getPlaylists() {
