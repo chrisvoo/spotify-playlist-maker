@@ -27,7 +27,8 @@
     "glob": "^9.2.1",
     "querystring": "^0.2.1",
     "sprightly": "^2.0.1",
-    "undici": "^5.20.0"
+    "undici": "^5.20.0",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.3",

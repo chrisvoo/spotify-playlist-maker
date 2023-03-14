@@ -14,6 +14,7 @@ import playlists from '../routes/playlists.js'
 import scan from '../routes/scan.js'
 import temp from '../routes/temp.js'
 import SpotifyClient from './spotifyClient.js'
+import logger from './logger.js'
 
 export type AppOptions = {
     port?: number,
@@ -82,7 +83,7 @@ export default class App {
     async start(): Promise<Server> {
         return new Promise((resolve) => {
             const server = this.express!.listen(this.port, () => {
-                console.log(`Server listening on http://localhost:${this.port}`)
+                logger.info(`Server listening on http://localhost:${this.port}`)
                 resolve(server)
             })
         })

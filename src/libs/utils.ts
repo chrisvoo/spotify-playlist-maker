@@ -1,5 +1,6 @@
 import crypto from 'crypto'
 import { checkExecutable } from './mediainfo/mediainfo.js';
+import logger from './logger.js';
 
 export async function checkEnv(): Promise<void> {
     if (
@@ -12,7 +13,7 @@ export async function checkEnv(): Promise<void> {
     }
 
     try {
-        console.log(await checkExecutable())
+        logger.info(await checkExecutable())
     } catch (e: any) {
         if (e.message.indexOf('not found') !== 0) {
             throw new Error('Please install mediainfo utility: https://mediaarea.net/en/MediaInfo/Download')
