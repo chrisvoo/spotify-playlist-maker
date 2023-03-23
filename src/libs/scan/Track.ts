@@ -14,18 +14,18 @@ export default class Track {
     }
 
     /**
-     * It composes the query string parameter for search API
+     * It composes the query string parameter for search API. It uses just the artist
+     * since spotify may have the song in a different album, EP, etc.
+     * Let's use the album just in the weird case we don't have the artist's name
      * @returns
      */
     getSearchableTerm(): string {
         let query = `${this.track_name} `
 
-        if (this.album !== undefined) {
-            query += `album:${this.album} `
-        }
-
         if (this.artist !== undefined) {
             query += `artist:${this.artist}`
+        } else if (this.album !== undefined) {
+            query += `album:${this.album} `
         }
 
         return query.trim()

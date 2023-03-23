@@ -157,7 +157,10 @@ export default class SpotifyClient {
                 query,
                 body: reqBody ? JSON.stringify(reqBody) : null
             })
-            logger.info(`apiCall ${endpoint}: ${statusCode}`)
+
+            const temp = new URLSearchParams(query as any).toString()
+            const qs = temp != '' ? `?${temp}` : ''
+            logger.info(`apiCall ${endpoint}${qs}: ${statusCode}`)
 
             return body.json()
         } catch (e: any) {

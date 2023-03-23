@@ -16,6 +16,7 @@ export default function start(app: App) {
             app.spotifyClient.userId = details.id
 
             res.render('start', {
+                directory: process.env.MUSIC_DIRECTORY,
                 userid: details.id,
                 name: details.display_name,
                 email: details.email,

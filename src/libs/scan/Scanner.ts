@@ -1,19 +1,32 @@
 import { readdir, lstat } from 'node:fs/promises';
+import { EventEmitter } from 'node:events';
 import path from 'node:path';
 import glob from 'glob'
 import Playlist from './Playlist.js';
 import SpotifyClient from '../spotifyClient.js';
-import Cache from './cache/Cache.js';
-import CacheItem from './cache/CacheItem.js';
-import CacheTrack from './cache/CacheTrack.js';
 import Track from './Track.js';
 import logger from '../logger.js';
+
+export interface ScanEvent {
+    action: string
+    item?: string | number,
+    extra?: any
+}
+
+export enum ScanEventAction {
+    PLAYLIST_CREATED = 'playlist_created',
+    TRACKS_ADDED = 'tracks_added',
+    PROGRESSION = 'progression',
+    ERROR = 'error',
+    DONE = 'done'
+}
 
 export default class Scanner {
     allowedExtensions: string[] = ['flac', 'mp3']
     playlists: Playlist[] = []
+    events = new EventEmitter()
+
     #client: SpotifyClient
-    #cache: Cache
 
     /**
      *
@@ -21,7 +34,6 @@ export default class Scanner {
      */
     constructor(client: SpotifyClient) {
         this.#client = client
-        this.#cache = new Cache()
     }
 
     async retrievePlaylists() {
@@ -43,19 +55,30 @@ export default class Scanner {
                     pl.spotify_id = id
 
                     let stopTracksLoop = false
+                    let offsetTracks = 0
+                    this.playlists.push(pl)
 
                     while(!stopTracksLoop) {
-                        const result = await this.#client.getPlaylistItems(id)
+                        const result = await this.#client.getPlaylistItems(id, { limit, offset: offsetTracks })
 
                         for (const item of result.items) {
                             if (item.track) {
-                                const { id, name, uri, artists } = item.track
+                                const { id, name, uri, artists, album: { name: albumName } } = item.track
                                 const track = new Track()
                                 track.spotify_uri = uri
                                 track.track_name = name
-                                track.artist = artists[0].name
+                                track.album = albumName
+                                track.artist = artists[0]?.name
+
+                                pl.addSpotifyTrack(track)
                             }
                         }
+
+                        if (result.next === null) {
+                            stopTracksLoop = true
+                        }
+
+                        offsetTracks += limit
                     }
                 }
 
@@ -65,7 +88,11 @@ export default class Scanner {
 
                 offset += limit
             } catch (e: any) {
-                logger.error('Error while retrieving playlists: ' + e.message)
+                this.events.emit('scan_event', {
+                    action: 'error',
+                    item: 'Error while retrieving playlists: ' + e.message
+                })
+                logger.error('Error while retrieving playlists: ' + e)
                 break
             }
         }
@@ -91,6 +118,7 @@ export default class Scanner {
     }
 
     async scan(dir: string): Promise<void> {
+        logger.info('Scanning started')
         // 1. retrieve all the current user's playlists
         await this.retrievePlaylists()
 
@@ -115,6 +143,10 @@ export default class Scanner {
                 // let's create it only if it doesn't exist on spotify
                 if (!playlist.spotify_id) {
                     const res = await this.#client.createPlaylist(playlist.name!)
+                    this.events.emit('scan_event', {
+                        action: ScanEventAction.PLAYLIST_CREATED,
+                        item: playlist.name
+                    })
                     playlist.spotify_id = res.id
                 }
 
@@ -122,14 +154,26 @@ export default class Scanner {
             }
         }
 
+        let playlistsDone = 0
+
         if (rootPlaylist.tracks.length > 0) {
             if (!rootPlaylist.spotify_id) {
                 const res = await this.#client.createPlaylist(rootPlaylist.name!)
+                this.events.emit('scan_event', {
+                    action: ScanEventAction.PLAYLIST_CREATED,
+                    item: rootPlaylist.name
+                })
                 rootPlaylist.spotify_id = res.id
             }
             this.playlists.push(rootPlaylist)
 
             await this.addTracksToPlaylist(rootPlaylist)
+            playlistsDone += 1
+
+            this.events.emit('scan_event', {
+                action: ScanEventAction.PROGRESSION,
+                item: Math.round(100 / this.playlists.length)
+            })
         }
 
         const remainingPlaylists = this.playlists.filter(p => p.path !== dir)
@@ -140,7 +184,17 @@ export default class Scanner {
             await pl.addTracks(files)
 
             await this.addTracksToPlaylist(pl)
+            ++playlistsDone
+
+            this.events.emit('scan_event', {
+                action: ScanEventAction.PROGRESSION,
+                item: Math.round(100 * playlistsDone / this.playlists.length)
+            })
         }
+
+        this.events.emit('scan_event', {
+            action: ScanEventAction.DONE
+        })
     }
 
     async addTracksToPlaylist(playlist: Playlist) {
@@ -149,85 +203,70 @@ export default class Scanner {
         if (playlist.tracks.length > 0) {
             logger.info(`${playlist.tracks.length} tracks to process...`)
             for (const track of playlist.tracks) {
-                if (track.track_name) {
-                    const cacheItem = this.#cache.getArtist(track.artist)
-                    if (cacheItem) {
-                        logger.info(`${cacheItem.artistName} in cache`)
-                        const cacheTrack = cacheItem.getTrack(track.track_name, track.album)
-                        if (cacheTrack) {
-                            logger.info(`${cacheTrack.trackName} in cache`)
-                            track.spotify_uri = cacheTrack.trackSpotifyURI
-                            continue
-                        }
-                    }
+                if (track.spotify_uri) {
+                    continue
+                }
 
-                    if (track.isSearchable()) {
+                if (track.track_name && track.isSearchable()) {
                         logger.info(`Searching ${track.getSearchableTerm()}`)
-                        const trackRes = await this.#client.searchTrack({
-                            q: track.getSearchableTerm()
-                        })
 
-                        if (trackRes.tracks.total !== 0) {
-                            const trackObj = trackRes.tracks.items[0]
-                            const { id: artistId, name, uri } = trackObj.artists[0]
-                            track.spotify_uri = uri
-
-                            const cacheItem = new CacheItem()
-                            cacheItem.artistName = name
-                            cacheItem.artistiId = artistId
-
-                            logger.info(`Getting albums for ${name}`)
-                            const albums = await this.#client.getAlbumsByArtist({
-                                id: artistId
+                        try {
+                            const trackRes = await this.#client.searchTrack({
+                                q: track.getSearchableTerm()
                             })
 
-                            logger.info(`Got ${albums.total} albums`)
-
-                            if (albums.total > 0) {
-                                for (const album of albums.items) {
-                                    const cacheTrack = new CacheTrack()
-
-                                    const { id: albumId, name: albumName } = album
-
-                                    logger.info(`Getting tracks for ${albumName}`)
-                                    const tracksByAlbumRes = await this.#client.getTracksByAlbum({
-                                        id: albumId
-                                    })
-
-                                    cacheTrack.albumName = albumName
-                                    cacheTrack.albumId = albumId
-
-                                    logger.info(`Found ${tracksByAlbumRes.total} tracks`)
-
-                                    if (tracksByAlbumRes.total > 0) {
-                                        for (const item of tracksByAlbumRes.items) {
-                                            const { uri, name } = item
-                                            cacheTrack.trackName = name
-                                            cacheTrack.trackSpotifyURI = uri
-                                        }
-                                    }
-
-                                    cacheItem.tracks.push(cacheTrack)
-                                }
-
-                                this.#cache.addItem(cacheItem)
+                            if (trackRes.tracks.total !== 0) {
+                                const trackObj = trackRes.tracks.items[0]
+                                const artistName = trackObj.artists[0].name
+                                track.spotify_uri = trackObj.uri
+                                logger.info(`Found track ${track.getSearchableTerm()} by ${artistName}`)
+                            } else {
+                                logger.warn(`Nothing found for ${track.track_name ?? track.path}`)
                             }
+                        } catch (e: any) {
+                            const errorMessage = `Error searching ${track.getSearchableTerm()}: ${e.message}`
+                            logger.error(errorMessage)
+                            this.events.emit('scan_event', {
+                                action: 'error',
+                                item: errorMessage
+                            })
                         }
-                    }
                 } else {
                     // this should never happen, check file name for parsing errors
-                    logger.warn(`Skipping ${track.path}, no track name!`)
+                    logger.warn(`Skipping ${track.path}, not searchable!`)
                 }
             }
 
-            await this.#client.addTracksToPlaylist({
-                playlistId: playlist.spotify_id!,
-                tracks: playlist.tracks
-                                .filter(t => t.spotify_uri !== undefined)
-                                .map(t => t.spotify_uri!)
-            })
+            try {
+                const tracksURI = playlist.tracks
+                                        .filter(t => t.spotify_uri !== undefined)
+                                        .map(t => t.spotify_uri!)
 
-            logger.info(`Current track status: ${JSON.stringify(this.#cache.getStatus())}`)
+                const tracksStats = {
+                    total_tracks: playlist.tracks,
+                    found_tracks: tracksURI.length
+                }
+
+                await this.#client.addTracksToPlaylist({
+                    playlistId: playlist.spotify_id!,
+                    tracks: playlist.tracks
+                                    .filter(t => t.spotify_uri !== undefined)
+                                    .map(t => t.spotify_uri!)
+                })
+
+                this.events.emit('scan_event', {
+                    action: ScanEventAction.TRACKS_ADDED,
+                    item: playlist.name,
+                    extra: tracksStats
+                })
+            } catch (e: any) {
+                const errorMessage = `Error addTracksToPlaylist for playlist ${playlist.name}: ${e.message}`
+                logger.error(errorMessage)
+                this.events.emit('scan_event', {
+                    action: 'error',
+                    item: errorMessage
+                })
+            }
         }
     }
 }

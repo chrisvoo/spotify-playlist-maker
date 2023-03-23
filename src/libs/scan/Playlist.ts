@@ -15,6 +15,10 @@ export default class Playlist {
         return this
     }
 
+    addSpotifyTrack(track: Track) {
+        this.tracks.push(track)
+    }
+
     async addTracks(files: string[]): Promise<void> {
         for (const file of files) {
             // let's do one by one instead of waiting for all promises
@@ -22,9 +26,18 @@ export default class Playlist {
         }
     }
 
+    hasTrack(trackName: string) {
+        return this.tracks
+                .filter(t => t.track_name !== undefined)
+                .map(t => t.track_name!.trim().toLowerCase())
+                .includes(trackName)
+    }
+
     async addTrack(file: string): Promise<void> {
         let track = new Track()
         try {
+
+
             const info = await mediainfo(file)
             track.path = file
 
@@ -44,8 +57,8 @@ export default class Playlist {
         }
 
         // let's check if this track has already been added to this playlist
-        const res = this.tracks.filter((t) => t.track_name?.trim().toLowerCase() === track.track_name)
-        if (res.length > 0) {
+        if (this.hasTrack(track.track_name)) {
+            logger.info(`${track.track_name} is already in ${this.name}`)
             return
         }
 
