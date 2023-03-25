@@ -9,7 +9,8 @@ type MediaInternalResponse = {
 export type MediaResponse = {
     title: string,
     artist: string,
-    album: string
+    album: string,
+    comment?: string
 }
 
 /**
@@ -31,7 +32,8 @@ export default async function mediainfo(path: string): Promise<MediaResponse | n
                     .map(o => ({
                         title: o.Title,
                         album: o.Album,
-                        artist: o.Album_Performer
+                        artist: o.Album_Performer,
+                        comment: o.Comment
                     }))
                 if (subset && subset.length > 0) {
                     resolve(subset[0])

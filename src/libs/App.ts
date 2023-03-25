@@ -12,7 +12,6 @@ import internalError from '../routes/error.js'
 import start from '../routes/start.js'
 import playlists from '../routes/playlists.js'
 import scan from '../routes/scan.js'
-import temp from '../routes/temp.js'
 import SpotifyClient from './spotifyClient.js'
 import logger from './logger.js'
 
@@ -67,7 +66,6 @@ export default class App {
         start(this)
         playlists(this)
         scan(this)
-        temp(this) //  @todo delete it
 
         // errors last
         notFound(this)

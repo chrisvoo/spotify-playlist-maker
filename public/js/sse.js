@@ -45,6 +45,7 @@
                } break
 
                case 'tracks_added': {
+                  console.log(extra)
                   tracks += extra.found_tracks
                   tracks_skipped += extra.total_tracks - extra.found_tracks
                   document.getElementById('message').textContent = `${action}: ${item}`

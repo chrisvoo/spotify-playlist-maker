@@ -162,6 +162,13 @@ export default class SpotifyClient {
             const qs = temp != '' ? `?${temp}` : ''
             logger.info(`apiCall ${endpoint}${qs}: ${statusCode}`)
 
+            if (![200,201].includes(statusCode)) {
+                logger.error(`Body sent: ${JSON.stringify(reqBody)}`)
+                const response = await body.json()
+                logger.error(`Response: ${JSON.stringify(response)}`)
+                return response;
+            }
+
             return body.json()
         } catch (e: any) {
             logger.error(`Error ${endpoint}: ${e.message} - ${e.stack}`)
@@ -229,7 +236,7 @@ export default class SpotifyClient {
             query: {
                 limit,
                 offset,
-                fields: params?.fields ?? 'total,next,items(track(id,name,artists(id,name)))'
+                fields: params?.fields ?? 'total,next,items(track(id,name,uri,artists(id,name)))'
             }
         })
     }
@@ -257,7 +264,7 @@ export default class SpotifyClient {
      * @returns
      */
     async searchTrack(params: SearchParams): Promise<SpotifyApi.TrackSearchResponse> {
-        const { limit = 1, offset = 0, q } = params
+        const { q } = params
 
         if (!q || typeof q != 'string' || q.trim().length === 0) {
             throw new Error('param q is mandatory for search')
@@ -266,8 +273,6 @@ export default class SpotifyClient {
         return this.#apiCall({
             endpoint: '/search',
             query: {
-                limit,
-                offset,
                 type: 'track',
                 q
             }

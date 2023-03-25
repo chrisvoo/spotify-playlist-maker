@@ -1,16 +1,17 @@
+import { randomUUID } from "node:crypto"
+
 export default class Track {
+    duplicate: boolean = false
     track_name?: string
     album?: string
     artist?: string
     spotify_uri?: string
     path?: string
+    remote: boolean = false // if it was retrieved by a remote playlist
 
     isSearchable(): boolean {
-        return this.track_name !== undefined && this.track_name.trim() !== '' &&
-               (
-                (this.album !== undefined && this.album.trim() !== '') ||
-                (this.artist !== undefined && this.artist.trim() !== '')
-               )
+        return this.track_name?.trim() !== '' &&
+               (this.album?.trim() !== '' || this.artist?.trim() !== '')
     }
 
     /**
