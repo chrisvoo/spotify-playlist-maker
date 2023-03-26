@@ -1,10 +1,6 @@
 # Spotify Playlist Maker
 
-This is a TypeScript app for creating playlists.
-It covers two main scenarios:
-
-* **local files**: you have some music files on yur computer grouped by directories named with the bands' names
-* **JSON file** (todo): you want to create a playlist by specifying its name and its content through a JSON file.
+This is a TypeScript app for creating playlists starting from your musuc files on yur computer grouped by directories named with the bands' names
 
 ## Local files
 
@@ -12,35 +8,10 @@ The script will traverse the file system starting for the main specified directo
 Despite the fact Spotify UI has folders in which you can organize your playlists, their API doen't give the possibility to manage them. That said, only the first-level deep directories will be used as main playlists, eventual subdirectories will be absorbed by the parent playlist.
 Both playlists and songs will be created following alphabetical order.
 
-## JSON file
-
-The script will loop through the fields in the JSON file. The first-level deep fields will be used as playlists and the array of songs will be used to add songs to that playlist in that specific order.  Spotify IDS aren't required, this is the final output format. Example:
-
-```json
-{
-    "Metal music": {
-        "spotify_id": "<id>",
-        "tracks": [
-            {
-                "track_name": "Battery",
-                "album": "Master of Puppets",
-                "artist": "Metallica",
-                "spotify_id": "<id>"
-            },
-            ...
-        ]
-    },
-    ...
-}
-
-```
-
-Album and artists are mainly used for disambiguation purposes, the song's name is not enough by itself.
-
 ## Constraints and rules
 
 * If a playlist's name is already present among spotify's playlists, its ID will be used and we won't create a new one.
-* If a song's name is already present inside a playlist, it will be skipped.
+* If a song's name is already present inside a playlist, it will be skipped. I save the spotify ID inside the "comment" metatag of each file to make comparisons.
 
 ## Resources
 

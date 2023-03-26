@@ -19,11 +19,14 @@
          document.getElementById('scanning-title').textContent = `Scanning ${SCANNING_DIRECTORY}`
          document.getElementById('status').textContent = 'started'
 
+         const scanState = {
+            playlists: 0,       // playlists created
+            tracks: 0,          // tracks found on spotify
+            tracks_skipped: 0,  // tracks not found
+            errors: 0           // errors
+         }
+
          const evtSource = new EventSource("/scan")
-         let playlists = 0       // playlists created
-         let tracks = 0          // tracks found on spotify
-         let tracks_skipped = 0  // tracks not found
-         let errors = 0          // errors
 
          evtSource.onmessage = (event) => {
             const { action, item, extra } = JSON.parse(event.data.trim())
@@ -35,19 +38,19 @@
                } break
 
                case 'playlist_created': {
-                  playlists++
+                  scanState.playlists++
                   document.getElementById('message').textContent = `${action}: ${item}`
                } break
 
                case 'error': {
-                  errors++
+                  scanState.errors++
                   document.getElementById('message').textContent = `${action}: ${item}`
                } break
 
                case 'tracks_added': {
                   console.log(extra)
-                  tracks += extra.found_tracks
-                  tracks_skipped += extra.total_tracks - extra.found_tracks
+                  scanState.tracks += extra.found_tracks
+                  scanState.tracks_skipped += extra.total_tracks - extra.found_tracks
                   document.getElementById('message').textContent = `${action}: ${item}`
                } break
 

@@ -94,6 +94,10 @@ export default class SpotifyClient {
         return this.#getToken(formData)
     }
 
+    /**
+     * Asks for an access token throug the authorization flow (login via spotify)
+     * @returns The access token
+     */
     async #getAccessToken() {
         const formData = new URLSearchParams()
         formData.append('code', this.authCode!)
