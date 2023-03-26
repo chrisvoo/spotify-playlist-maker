@@ -1,6 +1,8 @@
 # Spotify Playlist Maker
 
-![Screenshot index page](./assets/app.png)
+<p align="center">
+<img src="./assets/app.png">
+</p>
 
 This is a TypeScript app for creating playlists starting from your music files on your computer. This is the simplified flow, also described [by this diagram](./flow.drawio):
 
